@@ -11,7 +11,7 @@ var connection = mysql.createConnection({
     password: 'Jorge+1995',
     database: 'bt'
 });
-
+console.log("entrei models")
 
 exports.get = function (req, res) {
 
