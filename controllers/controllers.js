@@ -16,6 +16,11 @@ router.get('/cars', function (req, res) {
     dados = Dados.get(req, res)
 });
 
+
+router.post('/cars', function (req, res) {
+    dados = Dados.specificCar(req, res)
+});
+
 router.get('/help', function (req, res) {
     //dados = Dados.get(req, res)
 
