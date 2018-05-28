@@ -30,7 +30,7 @@ exports.specificCar = function (req, res) {
 
     for (var key in param) {
         if (key == "matricula") {
-            whereQuery +="vendas.matricula='" + param[key] + "' AND "
+            whereQuery +="venda.matricula='" + param[key] + "' AND "
         } else {
             whereQuery += key + '.' + key + "='" + param[key] + "' AND "
         }
