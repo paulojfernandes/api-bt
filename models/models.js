@@ -60,9 +60,9 @@ exports.postSpecificCarStock = function (req, res) {
             whereQuery += key + '.' + key + "='" + param[key] + "' AND "
         }
     }
-    
+
     console.log(param[0]);
-    var query = 'SELECT marca, modelo, categoria, img FROM venda, marca, modelo, extras, categoria' + whereQuery + ' venda.id_categoria = categoria.id_categoria AND venda.id_marca = marca.id_marca AND venda.id_modelo = modelo.id_modelo AND venda.id_extras = extras.id_extras  AND venda.vendido = 0; ';
+    var query = 'SELECT marca, modelo, categoria, img FROM venda, marca, modelo, extras, categoria WHERE' + whereQuery + ' venda.id_categoria = categoria.id_categoria AND venda.id_marca = marca.id_marca AND venda.id_modelo = modelo.id_modelo AND venda.id_extras = extras.id_extras  AND venda.vendido = 0; ';
        
     
     queryStandard(query, req, res)
