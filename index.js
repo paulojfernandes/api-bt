@@ -17,13 +17,7 @@ app.use(bodyParser.urlencoded({
 app.use(bodyParser.json())
 
 
-
-setInterval(function() {
-    http.get("https://api-bt.herokuapp.com");
-}, 300000);
-
-
-var port = process.env.PORT || 3000;
+var port = process.env.port || 3000;
 
 
 app.listen(port)
