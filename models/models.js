@@ -19,7 +19,7 @@ exports.get = function (req, res) {
 }
 
 
-exports.specificCar = function (req, res) {
+exports.postSpecificCar = function (req, res) {
     var param = {};
     var whereQuery = " "
 
@@ -30,23 +30,68 @@ exports.specificCar = function (req, res) {
 
     for (var key in param) {
         if (key == "matricula") {
-            whereQuery +="venda.matricula='" + param[key] + "' AND "
+            whereQuery += "venda.matricula='" + param[key] + "' AND "
         } else {
             whereQuery += key + '.' + key + "='" + param[key] + "' AND "
         }
     }
-
-    // where+= Object.keys(param)[i]+"."+Object.keys(param)[i]+"="+param[i]; 
-
-
-
     console.log(param[0]);
-    // res.send("ola"+ param.name+":  "+ Object.keys(param)[0])  
-    //res.send("ola"+ where);  
-
     var query = 'SELECT marca, modelo, categoria, extras,img FROM   venda, vendidos, marca, modelo, extras,categoria WHERE' + whereQuery + ' venda.id_categoria = categoria.id_categoria AND venda.id_marca = marca.id_marca AND venda.id_modelo = modelo.id_modelo AND venda.id_extras = extras.id_extras; ';
     queryStandard(query, req, res)
 }
+
+
+
+
+exports.postSpecificCarStock = function (req, res) {
+
+    var param = {};
+    var whereQuery = " "
+
+    for (var key in req.body) {
+        req.body[key] !== "" ? param[key] = req.body[key] : null;
+    }
+
+
+    for (var key in param) {
+        if (key == "matricula") {
+            whereQuery += "venda.matricula='" + param[key] + "' AND "
+        } else {
+            whereQuery += key + '.' + key + "='" + param[key] + "' AND "
+        }
+    }
+    
+    console.log(param[0]);
+    var query = 'SELECT marca, modelo, categoria, img FROM venda, marca, modelo, extras, categoria' + whereQuery + ' venda.id_categoria = categoria.id_categoria AND venda.id_marca = marca.id_marca AND venda.id_modelo = modelo.id_modelo AND venda.id_extras = extras.id_extras  AND venda.vendido = 0; ';
+       
+    
+    queryStandard(query, req, res)
+
+
+
+
+}
+
+exports.getCarSales = function (req, res) {
+
+
+
+}
+
+exports.getClients = function (req, res) {
+
+
+}
+
+exports.postSpecificClient = function (req, res) {
+
+
+
+}
+
+
+
+
 
 function queryStandard(query, req, res) {
 
