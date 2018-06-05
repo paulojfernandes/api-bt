@@ -18,7 +18,7 @@ var config = {
 console.log("entrei models");
 
 exports.getCarsStock = function(req, res) {
-    var query = 'SELECT marca, modelo, categoria,img, venda.vendido,extras, cilindrada, matricula, cor FROM venda, marca, modelo, extras, categoria WHERE venda.id_categoria = categoria.id_categoria AND venda.id_marca = marca.id_marca AND venda.id_modelo = modelo.id_modelo AND venda.id_extras = extras.id_extras AND venda.vendido = 0;';
+    var query = 'SELECT marca, modelo, categoria,ano, extras,img,venda.vendido,preço,cilindrada, matricula, km,cor FROM venda, marca, modelo, extras, categoria WHERE venda.id_categoria = categoria.id_categoria AND venda.id_marca = marca.id_marca AND venda.id_modelo = modelo.id_modelo AND venda.id_extras = extras.id_extras AND venda.vendido = 0;';
     queryStandard(query, req, res);
 };
 
@@ -41,7 +41,7 @@ exports.postSpecificCar = function(req, res) {
         }
     }
 
-    var query = 'SELECT marca, modelo, categoria, extras,img,venda.vendido,preço,cilindrada, matricula, km,cor FROM   venda, vendidos, marca, modelo, extras,categoria WHERE' + whereQuery + ' venda.id_categoria = categoria.id_categoria AND venda.id_marca = marca.id_marca AND venda.id_modelo = modelo.id_modelo AND venda.id_extras = extras.id_extras; ';
+    var query = 'SELECT marca, modelo, categoria,ano, extras,img,venda.vendido,preço,cilindrada, matricula, km,cor FROM   venda, vendidos, marca, modelo, extras,categoria WHERE' + whereQuery + ' venda.id_categoria = categoria.id_categoria AND venda.id_marca = marca.id_marca AND venda.id_modelo = modelo.id_modelo AND venda.id_extras = extras.id_extras; ';
     queryStandard(query, req, res);
 };
 
@@ -63,7 +63,7 @@ exports.postSpecificCarStock = function(req, res) {
             whereQuery += key + '.' + key + "='" + param[key] + "' AND ";
         }
     }
-    var query = 'SELECT marca, modelo, categoria,img, venda.vendido,extras, cilindrada,preço, matricula,km, cor  FROM venda, marca, modelo, extras, categoria WHERE' + whereQuery + ' venda.id_categoria = categoria.id_categoria AND venda.id_marca = marca.id_marca AND venda.id_modelo = modelo.id_modelo AND venda.id_extras = extras.id_extras  AND venda.vendido = 0; ';
+    var query = 'SELECT marca, modelo, categoria,ano, extras,img,venda.vendido,preço,cilindrada, matricula, km,cor FROM venda, marca, modelo, extras, categoria WHERE' + whereQuery + ' venda.id_categoria = categoria.id_categoria AND venda.id_marca = marca.id_marca AND venda.id_modelo = modelo.id_modelo AND venda.id_extras = extras.id_extras  AND venda.vendido = 0; ';
 
     queryStandard(query, req, res);
 
