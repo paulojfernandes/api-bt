@@ -66,8 +66,9 @@ router.post('/addClient', function (req, res) {
     dados = Dados.addClient(req, res)
 })
 
-router.post('sellCar', function (req, res) {
+router.post('/sellCar', function (req, res) {
     dados = Dados.sellCar(req, res);
+    //res.send("ola")
 });
 
 
