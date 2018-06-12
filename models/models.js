@@ -212,176 +212,132 @@ exports.postAddCar = function (req, res) {
 
 exports.sellCar = function (req, res) {
     console.log(req.body)
-    res.send(req.body)
+   // res.send(req.body)
 
-    // var connection = new mysql.createConnection(config);
-    // connection.connect(
-    //     function (err) {
-    //         if (err) {
-    //             console.log("!!! Cannot connect !!! Error:");
-    //             throw err;
-    //         } else {
-    //             console.log("Connection established.");
+    var connection = new mysql.createConnection(config);
+    connection.connect(
+        function (err) {
+            if (err) {
+                console.log("!!! Cannot connect !!! Error:");
+                throw err;
+            } else {
+                console.log("Connection established.");
 
-    //         }
-    //     });
+            }
+        });
 
-    // var morada = req.body.morada;
-    // var cidade = req.body.cidade;
-    // var distrito = req.body.distrito;
-    // var nif = req.body.nif;
-    // var telemovel = req.body.telemovel;
-    // var nome = req.body.nome;
-    // var id_morada = req.body.id_morada;
-    // var id_venda = req.body.id_venda
-    // var id_cliente = req.body.id_cliente
-    // var preco_final = req.body.preco_final
+    var morada = req.body.morada;
+    var cidade = req.body.cidade;
+    var distrito = req.body.distrito;
+    var nif = req.body.nif;
+    var telemovel = req.body.telemovel;
+    var nome = req.body.nome;
+    var id_morada = req.body.id_morada;
+    var id_venda = req.body.id_venda
+    var id_cliente = req.body.id_cliente
+    var preco_final = req.body.preco_final
 
-    // //res.send(req.body);
-    // if (req.body.exists == "true") {
+    //res.send(req.body);
+    if (req.body.exists == true) {
+        /* se o cliente já existe
+         ** update aos dados do cliente
+         ** id do cliente 
+         ** id da venda(CARRO)-- ADICIONAR AO PEDIDO 
+         ** preço final 
+         */
 
+        connection.query('UPDATE morada SET morada = "' + morada + '", cidade = "' + cidade + '", distrito = "' + distrito + '" WHERE id_morada = ' + id_morada + ';', function (err, rows, fields) {
+            if (!err) {
+                //res.status(200).send(rows)
+                console.log("Morada Inserida");
 
+                connection.query(' UPDATE cliente SET nome = "' + nome + '", nif = "' + nif + '", telemovel = "' + telemovel + '" WHERE nif = "' + nif + '";', function (err, rows, fields) {
+                    if (!err) {
+                        //res.status(200).send(rows)
+                        console.log("Cliente Atualizado");
 
+                        connection.query('insert into vendidos(id_venda, id_cliente, preço_final, data_venda) values(' + id_venda + ', ' + id_cliente + ', ' + preco_final + ', now());', function (err, rows, fields) {
+                            if (!err) {
+                                //res.status(200).send(rows)
+                                console.log("Carro Vendido");
 
+                                connection.query('update venda set vendido = 1 where id_venda = ' + id_venda + ';', function (err, rows, fields) {
+                                    if (!err) {
+                                        res.status(200).send("VENDIDO")
+                                        console.log("Stock Atualizado");
+                                    } else {
+                                        res.status(500).send("Erro  Atualizar");
+                                        console.log('Error while performing Query.', err);
+                                    }
+                                    connection.end();
+                                });
+                            } else {
+                                res.status(500).send("Erro  Vendidos");
+                                console.log('Error while performing Query.', err);
+                            }
+                        });
+                    } else {
+                        res.status(500).send("Erro  Cliente");
+                        console.log('Error while performing Query.', err);
+                    }
+                });
+            } else {
+                res.status(500).send("Erro  Morada");
+                console.log('Error while performing Query.', err);
+            }
+        });
 
-    //     /* se o cliente já existe
-    //      ** update aos dados do cliente
-    //      ** id do cliente 
-    //      ** id da venda(CARRO)-- ADICIONAR AO PEDIDO 
-    //      ** preço final 
-    //      */
-
-    //     connection.query('UPDATE morada SET morada = "' + morada + '", cidade = "' + cidade + '", distrito = "' + distrito + '" WHERE id_morada = ' + id_morada + ';', function (err, rows, fields) {
-    //         if (!err) {
-    //             //res.status(200).send(rows)
-    //             console.log("Morada Inserida");
-
-    //             connection.query(' UPDATE cliente SET nome = "' + nome + '", nif = "' + nif + '", telemovel = "' + telemovel + '" WHERE nif = "' + nif + '";', function (err, rows, fields) {
-    //                 if (!err) {
-    //                     //res.status(200).send(rows)
-    //                     console.log("Cliente Atualizado");
-
-    //                     connection.query('insert into vendidos(id_venda, id_cliente, preço_final, data_venda) values(' + id_venda + ', ' + id_cliente + ', ' + preco_final + ', now());', function (err, rows, fields) {
-    //                         if (!err) {
-    //                             //res.status(200).send(rows)
-    //                             console.log("Carro Vendido");
-
-    //                             connection.query('update venda set vendido = 1 where id_venda = ' + id_venda + ';', function (err, rows, fields) {
-    //                                 if (!err) {
-    //                                     res.status(200).send("VENDIDO")
-    //                                     console.log("Stock Atualizado");
-    //                                 } else {
-    //                                     res.status(500).send("Erro  Atualizar");
-    //                                     console.log('Error while performing Query.', err);
-    //                                 }
-    //                                 connection.end();
-    //                             });
-    //                         } else {
-    //                             res.status(500).send("Erro  Vendidos");
-    //                             console.log('Error while performing Query.', err);
-    //                         }
-    //                     });
-    //                 } else {
-    //                     res.status(500).send("Erro  Cliente");
-    //                     console.log('Error while performing Query.', err);
-    //                 }
-    //             });
-    //         } else {
-    //             res.status(500).send("Erro  Morada");
-    //             console.log('Error while performing Query.', err);
-    //         }
-    //     });
-
-
-
-    // } else if (req.body.exists == "false") {
-
-
-    //     /* se o cliente não existe
-    //       ** inserir morada
-    //       ** inserir cliente
-    //       ** inserir nos vendidos          
+    } else if (req.body.exists == false) {
+        /* se o cliente não existe
+          ** inserir morada
+          ** inserir cliente
+          ** inserir nos vendidos          
            
-    //       */
-    //     connection.query('INSERT INTO morada(morada, cidade,distrito, país) values("' + morada + '", "' + cidade + '", "' + distrito + '", "Portugal");', function (err, rows, fields) {
-    //         if (!err) {
-    //             //res.status(200).send(rows)
-    //             console.log("Morada Inserida");
-    //         } else {
-    //             res.status(500).send("Erro  Modelo");
-    //             console.log('Error while performing Query.', err);
-    //         }
+          */
+        connection.query('INSERT INTO morada(morada, cidade,distrito, país) values("' + morada + '", "' + cidade + '", "' + distrito + '", "Portugal");', function (err, rows, fields) {
+            if (!err) {
+                //res.status(200).send(rows)
+                console.log("Morada Inserida");
+            } else {
+                res.status(500).send("Erro  Modelo");
+                console.log('Error while performing Query.', err);
+            }
 
-    //     });
+        });
 
-    //     connection.query('INSERT INTO cliente(id_morada, nif, telemovel, nome) values((select max(id_morada) from morada),"' + nif + '","' + telemovel + '","' + nome + '");', function (err, rows, fields) {
-    //         if (!err) {
-    //             // res.status(200).send("Cliente Inserido")
-    //             console.log("Cliente Inserido");
+        connection.query('INSERT INTO cliente(id_morada, nif, telemovel, nome) values((select max(id_morada) from morada),"' + nif + '","' + telemovel + '","' + nome + '");', function (err, rows, fields) {
+            if (!err) {
+                // res.status(200).send("Cliente Inserido")
+                console.log("Cliente Inserido");
 
-    //             connection.query('insert into vendidos(id_venda, id_cliente, preço_final, data_venda) values(' + id_venda + ', (select max(id_cliente) from cliente), ' + preco_final + ', now());', function (err, rows, fields) {
-    //                 if (!err) {
-    //                     //res.status(200).send(rows)
-    //                     console.log("Carro Vendido");
+                connection.query('insert into vendidos(id_venda, id_cliente, preço_final, data_venda) values(' + id_venda + ', (select max(id_cliente) from cliente), ' + preco_final + ', now());', function (err, rows, fields) {
+                    if (!err) {
+                        //res.status(200).send(rows)
+                        console.log("Carro Vendido");
 
-    //                     connection.query('update venda set vendido = 1 where id_venda = ' + id_venda + ';', function (err, rows, fields) {
-    //                         if (!err) {
-    //                             res.status(200).send("VENDIDO")
-    //                             console.log("Stock Atualizado");
-    //                         } else {
-    //                             res.status(500).send("Erro  Atualizar");
-    //                             console.log('Error while performing Query.', err);
-    //                         }
-    //                         connection.end();
-    //                     });
-    //                 } else {
-    //                     res.status(500).send("Erro  Vendidos");
-    //                     console.log('Error while performing Query.', err);
-    //                 }
-    //             });
-    //         } else {
-    //             res.status(500).send("Erro BD Cliente");
-    //             console.log('Error while performing Query.', err);
-    //         }          
-    //     });
+                        connection.query('update venda set vendido = 1 where id_venda = ' + id_venda + ';', function (err, rows, fields) {
+                            if (!err) {
+                                res.status(200).send("VENDIDO")
+                                console.log("Stock Atualizado");
+                            } else {
+                                res.status(500).send("Erro  Atualizar");
+                                console.log('Error while performing Query.', err);
+                            }
+                            connection.end();
+                        });
+                    } else {
+                        res.status(500).send("Erro  Vendidos");
+                        console.log('Error while performing Query.', err);
+                    }
+                });
+            } else {
+                res.status(500).send("Erro BD Cliente");
+                console.log('Error while performing Query.', err);
+            }
+        });
+        // res.send("NOT")
 
-
-
-
-
-
-
-
-
-    //     // res.send("NOT")
-
-    // }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+    }
 }
 
 
