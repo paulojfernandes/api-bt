@@ -18,7 +18,7 @@ var config = {
 console.log("entrei models");
 
 exports.getCarsStock = function (req, res) {
-    var query = 'SELECT  venda.id_venda,marca, modelo, categoria,ano, extras,img,venda.vendido,preço,cilindrada, matricula, km,cor FROM venda, marca, modelo, extras, categoria WHERE venda.id_categoria = categoria.id_categoria AND venda.id_marca = marca.id_marca AND venda.id_modelo = modelo.id_modelo AND venda.id_extras = extras.id_extras AND venda.vendido = 0;';
+    var query = 'SELECT  venda.id_venda,marca, modelo, categoria,ano, extras,img,venda.vendido,preço as preco,cilindrada, matricula, km,cor FROM venda, marca, modelo, extras, categoria WHERE venda.id_categoria = categoria.id_categoria AND venda.id_marca = marca.id_marca AND venda.id_modelo = modelo.id_modelo AND venda.id_extras = extras.id_extras AND venda.vendido = 0;';
     queryStandard(query, req, res);
 };
 
