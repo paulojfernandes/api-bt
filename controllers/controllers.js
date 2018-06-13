@@ -71,6 +71,15 @@ router.post('/sellCar', function (req, res) {
     //res.send("ola")
 });
 
+router.put('/clients', function (req, res) {
+    dados = Dados.updateClient(req, res);
+    //res.send("ola")
+});
+
+router.delete('/clients', function (req, res) {
+    dados = Dados.deleteClient(req, res);
+    //res.send("ola")
+});
 
 router.get('/help', function (req, res) {
     //dados = Dados.get(req, res)

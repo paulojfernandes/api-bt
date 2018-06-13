@@ -212,7 +212,7 @@ exports.postAddCar = function (req, res) {
 
 exports.sellCar = function (req, res) {
     console.log(req.body)
-   // res.send(req.body)
+    // res.send(req.body)
 
     var connection = new mysql.createConnection(config);
     connection.connect(
@@ -390,11 +390,93 @@ exports.addClient = function (req, res) {
         }
         connection.end();
     });
+};
 
+exports.updateClient = function (req, res) {
+    var morada = req.body.morada;
+    var distrito = req.body.distrito;
+    var cidade = req.body.cidade;
+    var id_morada = req.body.id_morada;
+    var nome = req.body.nome;
+    var nif = req.body.nif;
+    var telemovel = req.body.telemovel;
+    var id_cliente = req.body.id_cliente;
+
+    var queryMorada = 'update morada set morada= "' + morada + '", distrito="' + distrito + '", cidade="' + cidade + '" where id_morada=' + id_morada + ' ;'
+    var queryCliente = 'update cliente set nome= "' + nome + '", nif="' + nif + '", telemovel= "' + telemovel + '" where id_cliente =' + id_cliente + ' ;'
+
+    query2Tables(queryMorada, queryCliente, req, res);
+
+}
+
+exports.deleteClient = function (req, res) {
+    var id_morada = req.body.id_morada;
+    var id_cliente = req.body.id_cliente;
+
+    var query1 = 'delete from morada where id_morada=5;'
+    var query2 = 'delete from cliente where id_cliente=6;'
+
+    query2Tables(query1, query2, req, res)
+
+};
+exports.updateCar = function (req, res) {
+
+
+};
+exports.deleteCar = function (req, res) {
+    var id_morada = req.body.id_morada;
 
 
 };
 
+
+
+
+function query2Tables(query1, query2, req, res) {
+
+    var connection = new mysql.createConnection(config);
+    connection.connect(
+        function (err) {
+            if (err) {
+                console.log("!!! Cannot connect !!! Error:");
+                throw err;
+            } else {
+                console.log("Connection established.");
+
+
+            }
+        });
+
+    connection.query('SET foreign_key_checks = 0;', function (err, rows, fields) {
+        if (!err) {
+            console.log("Foreign KEY");
+        } else {
+            console.log("Error foreign key .");
+        }
+
+    });
+
+    connection.query(query1, function (err, rows, fields) {
+        if (!err) {
+            console.log("Atualizei Morada");
+            connection.query(query2, function (err, rows, fields) {
+                if (!err) {
+                    res.status(200).send("Cliente Atualizado");
+                    console.log("entrei");
+                } else {
+                    res.status(500).send("Erro BD");
+                    console.log('Error while performing Query.', err);
+                }
+                connection.end();
+            });
+
+        } else {
+            res.status(500).send("Erro BD");
+            console.log('Error while performing Query.', err);
+        }
+    });
+
+}
 
 
 
