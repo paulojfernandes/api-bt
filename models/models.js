@@ -71,7 +71,7 @@ exports.postSpecificCarStock = function (req, res) {
 exports.getCarSales = function (req, res) {
 
 
-    var query = 'SELECT venda.*, vendidos.* FROM venda, marca, modelo, extras, categoria, vendidos, cliente WHERE venda.id_categoria = categoria.id_categoria AND venda.id_marca = marca.id_marca AND venda.id_modelo = modelo.id_modelo AND venda.id_extras = extras.id_extras AND venda.vendido = 1 and vendidos.id_cliente= cliente.id_cliente and venda.id_venda= vendidos.id_venda;';
+    var query = 'SELECT venda.*, modelo, categoria,nif,vendidos.* FROM venda, marca, modelo, extras, categoria, vendidos, cliente WHERE venda.id_categoria = categoria.id_categoria AND venda.id_marca = marca.id_marca AND venda.id_modelo = modelo.id_modelo AND venda.id_extras = extras.id_extras AND venda.vendido = 1 and vendidos.id_cliente= cliente.id_cliente and venda.id_venda= vendidos.id_venda;';
     queryStandard(query, req, res);
 
 };
