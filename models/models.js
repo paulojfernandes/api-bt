@@ -412,10 +412,13 @@ exports.updateClient = function (req, res) {
 exports.deleteClient = function (req, res) {
     var id_morada = req.body.id_morada;
     var id_cliente = req.body.id_cliente;
+    //console.log(req.body,id_cliente,id_morada);
 
+    
     var query1 = 'delete from morada where id_morada=' + id_morada + ';'
     var query2 = 'delete from cliente where id_cliente=' + id_cliente + ';'
 
+    res.send("OLA")
     query2Tables(query1, query2, req, res)
 
 };
