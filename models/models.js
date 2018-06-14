@@ -413,8 +413,8 @@ exports.deleteClient = function (req, res) {
     var id_morada = req.body.id_morada;
     var id_cliente = req.body.id_cliente;
 
-    var query1 = 'delete from morada where id_morada=5;'
-    var query2 = 'delete from cliente where id_cliente=6;'
+    var query1 = 'delete from morada where id_morada=' + id_morada + ';'
+    var query2 = 'delete from cliente where id_cliente=' + id_cliente + ';'
 
     query2Tables(query1, query2, req, res)
 
@@ -424,7 +424,16 @@ exports.updateCar = function (req, res) {
 
 };
 exports.deleteCar = function (req, res) {
-    var id_morada = req.body.id_morada;
+
+    var id_venda = req.body.id_venda;
+    var id_modelo = req.body.id_morada;
+
+    var query1 = 'delete from venda where id_venda=' + id_venda + ';'
+    var query2 = 'delete from morada where id_morada=' + id_modelo + ';'
+
+    query2Tables(query1, query2, req, res)
+
+
 
 
 };
