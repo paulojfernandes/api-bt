@@ -19,13 +19,15 @@ console.log("entrei models");
 
 exports.getCarsStock = function (req, res) {
     var query = 'SELECT  venda.id_venda,marca, modelo, categoria,ano, extras,img,venda.vendido,preço as preco,cilindrada, matricula, km,cor FROM venda, marca, modelo, extras, categoria WHERE venda.id_categoria = categoria.id_categoria AND venda.id_marca = marca.id_marca AND venda.id_modelo = modelo.id_modelo AND venda.id_extras = extras.id_extras AND venda.vendido = 0;';
-    queryStandard(query, req, res);
+    var error = "Não foi possível obter os carros em stock "
+    queryStandard(query, error, req, res);
 };
 
 // Obter carros especificos ( Vendidos Incluidos )
 exports.postSpecificCar = function (req, res) {
     var param = {};
     var whereQuery = " ";
+    var error = "Não foi possível obter o carro pretendido"
 
     for (var key in req.body) {
         req.body[key] !== "" ? param[key] = req.body[key] : null;
@@ -42,16 +44,18 @@ exports.postSpecificCar = function (req, res) {
 
     var query = 'SELECT venda.id_venda,marca, modelo, categoria,ano, extras,img,venda.vendido,preço,cilindrada, matricula, km,cor FROM   venda, marca, modelo, extras,categoria WHERE' + whereQuery + ' venda.id_categoria = categoria.id_categoria AND venda.id_marca = marca.id_marca AND venda.id_modelo = modelo.id_modelo AND venda.id_extras = extras.id_extras; ';
     console.log(query);
-    queryStandard(query, req, res);
+
+    queryStandard(query, error, req, res);
 };
 
 
 
 // Obter carros especifico em stock 
 exports.postSpecificCarStock = function (req, res) {
-
     var param = {};
     var whereQuery = " ";
+    var error = "Não foi possível obter o carro pretendido"
+
     for (var key in req.body) {
         req.body[key] !== "" ? param[key] = req.body[key] : null;
     }
@@ -64,23 +68,24 @@ exports.postSpecificCarStock = function (req, res) {
     }
     var query = 'SELECT venda.id_venda,marca, modelo, categoria,ano, extras,img,venda.vendido,preço,cilindrada, matricula, km,cor FROM venda, marca, modelo, extras, categoria WHERE' + whereQuery + ' venda.id_categoria = categoria.id_categoria AND venda.id_marca = marca.id_marca AND venda.id_modelo = modelo.id_modelo AND venda.id_extras = extras.id_extras  AND venda.vendido = 0; ';
     console.log(query);
-    queryStandard(query, req, res);
+    queryStandard(query, error, req, res);
 
 };
 
 exports.getCarSales = function (req, res) {
 
-
+    var error = "Não foi possível obter os carros vendidos"
     var query = 'SELECT venda.*, marca,modelo, preço_final as preco_final ,categoria,cliente.*,vendidos.* FROM venda, marca, modelo, extras, categoria, vendidos, cliente WHERE venda.id_categoria = categoria.id_categoria AND venda.id_marca = marca.id_marca AND venda.id_modelo = modelo.id_modelo AND venda.id_extras = extras.id_extras AND venda.vendido = 1 and vendidos.id_cliente= cliente.id_cliente and venda.id_venda= vendidos.id_venda;';
-    queryStandard(query, req, res);
+    queryStandard(query, error, req, res);
 
 };
 
 exports.postTotalSalesDay = function (req, res) {
 
     var data = req.body.data;
+    var error = "Não foi possível obter as vendas do dia:" + data
     var query = "SELECT COUNT(id_vendido) as total FROM vendidos WHERE DATE_FORMAT(vendidos.data_venda, '%d/%m/%Y') = '" + data + "';";
-    queryStandard(query, req, res);
+    queryStandard(query, error, req, res);
 };
 
 exports.postSales = function (req, res) {
@@ -103,18 +108,20 @@ exports.postSales = function (req, res) {
         }
     }
     var query = 'SELECT COUNT(id_vendido) as total  FROM' + fromQuery + 'WHERE' + whereQuery + ' venda.id_venda = vendidos.id_venda ';
-    queryStandard(query, req, res);
+    queryStandard(query, error, req, res);
 };
 
 
 
 exports.getClients = function (req, res) {
+    var error = "Não foi possível obter os clientes"
     var query = 'select * from cliente, morada where cliente.id_morada= morada.id_morada; ';
-    queryStandard(query, req, res);
+    queryStandard(query, error, req, res);
 };
 
 exports.postSpecificClient = function (req, res) {
 
+    var error = "Não foi possível obter o cliente pretendido"
     var param = {};
     var whereQuery = " ";
     for (var key in req.body) {
@@ -126,26 +133,27 @@ exports.postSpecificClient = function (req, res) {
 
     var query = 'select * from cliente, morada where' + whereQuery + '	 cliente.id_morada= morada.id_morada ';
 
-    queryStandard(query, req, res);
+    queryStandard(query, error, req, res);
 };
 
 
 exports.getBrands = function (req, res) {
     var query = 'SELECT * FROM marca ';
-
-    queryStandard(query, req, res);
+    var error = "Não foi possível obter as marcas"
+    queryStandard(query, error, req, res);
 
 };
 
 exports.getCategories = function (req, res) {
     var query = 'SELECT * FROM categoria ';
-
-    queryStandard(query, req, res);
+    var error = "Não foi possível obter as categorias"
+    queryStandard(query, error, req, res);
 
 };
 
 
 exports.postAddCar = function (req, res) {
+    var error = "Não foi possível adicionar o carro !"
     console.log(req.body);
 
     var id_marca = req.body.id_marca;
@@ -212,6 +220,7 @@ exports.postAddCar = function (req, res) {
 
 exports.sellCar = function (req, res) {
     console.log(req.body)
+    var error = "Não foi possível vender o carro"
     // res.send(req.body)
 
     var connection = new mysql.createConnection(config);
@@ -302,7 +311,6 @@ exports.sellCar = function (req, res) {
                 res.status(500).send("Erro  Modelo");
                 console.log('Error while performing Query.', err);
             }
-
         });
 
         connection.query('INSERT INTO cliente(id_morada, nif, telemovel, nome) values((select max(id_morada) from morada),"' + nif + '","' + telemovel + '","' + nome + '");', function (err, rows, fields) {
@@ -344,7 +352,7 @@ exports.sellCar = function (req, res) {
 
 
 exports.addClient = function (req, res) {
-
+    var error = "Não foi possível adicionar o cliente"
     console.log(req.body);
 
     var morada = req.body.morada;
@@ -393,6 +401,8 @@ exports.addClient = function (req, res) {
 };
 
 exports.updateClient = function (req, res) {
+    var error = "Não foi possível atualizar os dados do cliente"
+
     var morada = req.body.morada;
     var distrito = req.body.distrito;
     var cidade = req.body.cidade;
@@ -410,11 +420,12 @@ exports.updateClient = function (req, res) {
 }
 
 exports.deleteClient = function (req, res) {
+    var error = "Não foi possível eliminar os clientes"
     var id_morada = req.body.id_morada;
     var id_cliente = req.body.id_cliente;
     //console.log(req.body,id_cliente,id_morada);
 
-    
+
     var query1 = 'delete from morada where id_morada=' + id_morada + ';'
     var query2 = 'delete from cliente where id_cliente=' + id_cliente + ';'
 
@@ -427,7 +438,7 @@ exports.updateCar = function (req, res) {
 
 };
 exports.deleteCar = function (req, res) {
-
+    var error = "Não foi possível eliminar o carro"
     var id_venda = req.body.id_venda;
     var id_modelo = req.body.id_morada;
 
@@ -492,7 +503,7 @@ function query2Tables(query1, query2, req, res) {
 
 
 
-function queryStandard(query, req, res) {
+function queryStandard(query, error, req, res) {
     var connection = new mysql.createConnection(config);
     connection.connect(
         function (err) {
