@@ -57,26 +57,37 @@ router.get('/categories', function (req, res) {
     dados = Dados.getCategories(req, res)
 })
 
-
-router.post('/addCar', function (req, res) {
+/* ADD CAR 
+- Passa a stocks
+*/
+router.post('/stocks', function (req, res) {
     dados = Dados.postAddCar(req, res)
 })
+/* 
+ADD CLIENT
+- Passa a Client
+*/
 
-router.post('/addClient', function (req, res) {
+router.post('/client', function (req, res) {
     dados = Dados.addClient(req, res)
 })
 
-router.post('/sellCar', function (req, res) {
+/* 
+SELL CAR
+-Passa a Sell
+*/
+
+router.post('/sell', function (req, res) {
     dados = Dados.sellCar(req, res);
     //res.send("ola")
 });
 
-router.put('/clients', function (req, res) {
+router.put('/client', function (req, res) {
     dados = Dados.updateClient(req, res);
     //res.send("ola")
 });
 
-router.delete('/clients', function (req, res) {
+router.delete('/client', function (req, res) {
     dados = Dados.deleteClient(req, res);
     //res.send("ola")
 });
