@@ -29,9 +29,10 @@ exports.getCarsStockpage = function (req, res) {
     var query;
     var error = "Não foi possível obter os carros em stock "
     var page = req.params.page
+    console.log(page)
     if (page > 1) {
         //  res.send("id is set to " + req.params.page);
-        query = "SELECT venda.id_venda, marca, modelo, categoria, ano, extras, img, venda.vendido, preço AS preco, cilindrada, matricula, km, cor,(select count(*) from venda where  vendido=0) as totalCarros FROM venda, marca, modelo, extras, categoria WHERE venda.id_categoria = categoria.id_categoria AND venda.id_marca = marca.id_marca AND venda.id_modelo = modelo.id_modelo AND venda.id_extras = extras.id_extras AND venda.vendido = 0 order by id_venda desc limit " + 3 * page + ",3;"
+        query = "SELECT venda.id_venda, marca, modelo, categoria, ano, extras, img, venda.vendido, preço AS preco, cilindrada, matricula, km, cor,(select count(*) from venda where  vendido=0) as totalCarros FROM venda, marca, modelo, extras, categoria WHERE venda.id_categoria = categoria.id_categoria AND venda.id_marca = marca.id_marca AND venda.id_modelo = modelo.id_modelo AND venda.id_extras = extras.id_extras AND venda.vendido = 0 order by id_venda desc limit " + 3 * (page-1) + ",3;"
         queryStandard(query, error, req, res);
     } else {
         // res.send("tagId is set to " + req.params.page);
