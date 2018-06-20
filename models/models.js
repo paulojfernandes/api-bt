@@ -32,11 +32,11 @@ exports.getCarsStockpage = function (req, res) {
     console.log(page)
     if (page > 1) {
         //  res.send("id is set to " + req.params.page);
-        query = "SELECT venda.id_venda, marca, modelo, categoria, ano, extras, img, venda.vendido, preço AS preco, cilindrada, matricula, km, cor,(select count(*) from venda where  vendido=0) as totalCarros FROM venda, marca, modelo, extras, categoria WHERE venda.id_categoria = categoria.id_categoria AND venda.id_marca = marca.id_marca AND venda.id_modelo = modelo.id_modelo AND venda.id_extras = extras.id_extras AND venda.vendido = 0 order by id_venda desc limit " + 3 * (page-1) + ",3;"
+        query = "SELECT venda.id_venda, marca, modelo, categoria, ano, extras, img, venda.vendido, preço AS preco, cilindrada, matricula, km, cor,(select count(*) from venda where  vendido=0) as totalCarros FROM venda, marca, modelo, extras, categoria WHERE venda.id_categoria = categoria.id_categoria AND venda.id_marca = marca.id_marca AND venda.id_modelo = modelo.id_modelo AND venda.id_extras = extras.id_extras AND venda.vendido = 0 order by id_venda desc limit " + 6 * (page-1) + ",6;"
         queryStandard(query, error, req, res);
     } else {
         // res.send("tagId is set to " + req.params.page);
-        query = "SELECT venda.id_venda, marca, modelo, categoria, ano, extras, img, venda.vendido, preço AS preco, cilindrada, matricula, km, cor,(select count(*) from venda where  vendido=0) as totalCarros FROM venda, marca, modelo, extras, categoria WHERE venda.id_categoria = categoria.id_categoria AND venda.id_marca = marca.id_marca AND venda.id_modelo = modelo.id_modelo AND venda.id_extras = extras.id_extras AND venda.vendido = 0 order by id_venda desc limit 0,3;"
+        query = "SELECT venda.id_venda, marca, modelo, categoria, ano, extras, img, venda.vendido, preço AS preco, cilindrada, matricula, km, cor,(select count(*) from venda where  vendido=0) as totalCarros FROM venda, marca, modelo, extras, categoria WHERE venda.id_categoria = categoria.id_categoria AND venda.id_marca = marca.id_marca AND venda.id_modelo = modelo.id_modelo AND venda.id_extras = extras.id_extras AND venda.vendido = 0 order by id_venda desc limit 0,6;"
         queryStandard(query, error, req, res);
     }
 }
@@ -97,11 +97,11 @@ exports.getCarSalesPage = function (req, res) {
     var page = req.params.page
     if (page > 1) {
         //  res.send("id is set to " + req.params.page);
-        query = 'SELECT venda.*, marca, modelo, preço_final AS preco_final, categoria, cliente.*, vendidos.*, (select count(*) from venda where  vendido=1) as totalCarros FROM venda, marca, modelo, extras, categoria, vendidos, cliente WHERE venda.id_categoria = categoria.id_categoria AND venda.id_marca = marca.id_marca AND venda.id_modelo = modelo.id_modelo AND venda.id_extras = extras.id_extras AND venda.vendido = 1 AND vendidos.id_cliente = cliente.id_cliente AND venda.id_venda = vendidos.id_venda order by venda.id_venda desc limit ' + 3 * page + ',3;'
+        query = 'SELECT venda.*, marca, modelo, preço_final AS preco_final, categoria, cliente.*, vendidos.*, (select count(*) from venda where  vendido=1) as totalCarros FROM venda, marca, modelo, extras, categoria, vendidos, cliente WHERE venda.id_categoria = categoria.id_categoria AND venda.id_marca = marca.id_marca AND venda.id_modelo = modelo.id_modelo AND venda.id_extras = extras.id_extras AND venda.vendido = 1 AND vendidos.id_cliente = cliente.id_cliente AND venda.id_venda = vendidos.id_venda order by venda.id_venda desc limit ' + 6 * (page-1) + ',6;'
         queryStandard(query, error, req, res);
     } else {
         // res.send("tagId is set to " + req.params.page);
-        query = "SELECT venda.*, marca, modelo, preço_final AS preco_final, categoria, cliente.*, vendidos.*, (select count(*) from venda where  vendido=1) as totalCarros FROM venda, marca, modelo, extras, categoria, vendidos, cliente WHERE venda.id_categoria = categoria.id_categoria AND venda.id_marca = marca.id_marca AND venda.id_modelo = modelo.id_modelo AND venda.id_extras = extras.id_extras AND venda.vendido = 1 AND vendidos.id_cliente = cliente.id_cliente AND venda.id_venda = vendidos.id_venda order by venda.id_venda desc limit 0,3;"
+        query = "SELECT venda.*, marca, modelo, preço_final AS preco_final, categoria, cliente.*, vendidos.*, (select count(*) from venda where  vendido=1) as totalCarros FROM venda, marca, modelo, extras, categoria, vendidos, cliente WHERE venda.id_categoria = categoria.id_categoria AND venda.id_marca = marca.id_marca AND venda.id_modelo = modelo.id_modelo AND venda.id_extras = extras.id_extras AND venda.vendido = 1 AND vendidos.id_cliente = cliente.id_cliente AND venda.id_venda = vendidos.id_venda order by venda.id_venda desc limit 0,6;"
         queryStandard(query, error, req, res);
     }
 };
