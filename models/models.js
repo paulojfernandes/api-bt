@@ -89,6 +89,23 @@ exports.postSpecificCarStock = function (req, res) {
 
 };
 
+exports.getCarSalesPage = function (req, res) {
+
+    var query;
+    var error = "Não foi possível obter os carros vendidos "
+    var page = req.params.page
+    if (page > 1) {
+        //  res.send("id is set to " + req.params.page);
+        query = 'SELECT venda.*, marca, modelo, preço_final AS preco_final, categoria, cliente.*, vendidos.*, (select count(*) from venda where  vendido=1) as totalCarros FROM venda, marca, modelo, extras, categoria, vendidos, cliente WHERE venda.id_categoria = categoria.id_categoria AND venda.id_marca = marca.id_marca AND venda.id_modelo = modelo.id_modelo AND venda.id_extras = extras.id_extras AND venda.vendido = 1 AND vendidos.id_cliente = cliente.id_cliente AND venda.id_venda = vendidos.id_venda order by venda.id_venda desc limit ' + 10 * page + ',10;'
+        queryStandard(query, error, req, res);
+    } else {
+        // res.send("tagId is set to " + req.params.page);
+        query = "SELECT venda.*, marca, modelo, preço_final AS preco_final, categoria, cliente.*, vendidos.*, (select count(*) from venda where  vendido=1) as totalCarros FROM venda, marca, modelo, extras, categoria, vendidos, cliente WHERE venda.id_categoria = categoria.id_categoria AND venda.id_marca = marca.id_marca AND venda.id_modelo = modelo.id_modelo AND venda.id_extras = extras.id_extras AND venda.vendido = 1 AND vendidos.id_cliente = cliente.id_cliente AND venda.id_venda = vendidos.id_venda order by venda.id_venda desc limit 0,10;"
+        queryStandard(query, error, req, res);
+    }
+};
+
+
 exports.getCarSales = function (req, res) {
 
     var error = "Não foi possível obter os carros vendidos"
@@ -96,7 +113,6 @@ exports.getCarSales = function (req, res) {
     queryStandard(query, error, req, res);
 
 };
-
 exports.postTotalSalesDay = function (req, res) {
 
     var data = req.body.data;

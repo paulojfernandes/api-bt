@@ -26,9 +26,10 @@ router.get('/stock', function (req, res) {
 router.get('/stock/:page', function (req, res) {
     dados = Dados.getCarsStockpage(req, res)
     //res.send("tagId is set to " + req.params.page);
-
-
 });
+router.get('/sales/:page', function (req, res) {
+    dados = Dados.getCarSalesPage(req, res)
+})
 
 
 router.post('/stock', function (req, res) {
