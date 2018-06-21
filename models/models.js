@@ -149,7 +149,7 @@ exports.postSales = function (req, res) {
 
 exports.getClients = function (req, res) {
     var error = "Não foi possível obter os clientes"
-    var query = 'select * from cliente, morada where cliente.id_morada= morada.id_morada; ';
+    var query = 'select * from cliente, morada where cliente.id_morada= morada.id_morada order by cliente.nome; ';
     queryStandard(query, error, req, res);
 };
 
