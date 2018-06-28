@@ -18,7 +18,7 @@ var config = {
 console.log("entrei models");
 
 exports.getCarsStock = function (req, res) {
-
+    //res.status(405).send({"code":1001,"status":405,"description":"Não foi possível adicionar o carro"})
     var query = 'SELECT  venda.id_venda,marca, modelo, categoria,ano, extras,img,venda.vendido,preço as preco,cilindrada, matricula, km,cor FROM venda, marca, modelo, extras, categoria WHERE venda.id_categoria = categoria.id_categoria AND venda.id_marca = marca.id_marca AND venda.id_modelo = modelo.id_modelo AND venda.id_extras = extras.id_extras AND venda.vendido = 0;';
     var error = "Não foi possível obter os carros em stock "
     queryStandard(query, error, req, res);
@@ -32,7 +32,7 @@ exports.getCarsStockpage = function (req, res) {
     console.log(page)
     if (page > 1) {
         //  res.send("id is set to " + req.params.page);
-        query = "SELECT venda.id_venda, marca, modelo, categoria, ano, extras, img, venda.vendido, preço AS preco, cilindrada, matricula, km, cor,(select count(*) from venda where  vendido=0) as totalCarros FROM venda, marca, modelo, extras, categoria WHERE venda.id_categoria = categoria.id_categoria AND venda.id_marca = marca.id_marca AND venda.id_modelo = modelo.id_modelo AND venda.id_extras = extras.id_extras AND venda.vendido = 0 order by id_venda desc limit " + 6 * (page-1) + ",6;"
+        query = "SELECT venda.id_venda, marca, modelo, categoria, ano, extras, img, venda.vendido, preço AS preco, cilindrada, matricula, km, cor,(select count(*) from venda where  vendido=0) as totalCarros FROM venda, marca, modelo, extras, categoria WHERE venda.id_categoria = categoria.id_categoria AND venda.id_marca = marca.id_marca AND venda.id_modelo = modelo.id_modelo AND venda.id_extras = extras.id_extras AND venda.vendido = 0 order by id_venda desc limit " + 6 * (page - 1) + ",6;"
         queryStandard(query, error, req, res);
     } else {
         // res.send("tagId is set to " + req.params.page);
@@ -97,7 +97,7 @@ exports.getCarSalesPage = function (req, res) {
     var page = req.params.page
     if (page > 1) {
         //  res.send("id is set to " + req.params.page);
-        query = 'SELECT venda.*, marca, modelo, preço_final AS preco_final, categoria, cliente.*, vendidos.*, (select count(*) from venda where  vendido=1) as totalCarros FROM venda, marca, modelo, extras, categoria, vendidos, cliente WHERE venda.id_categoria = categoria.id_categoria AND venda.id_marca = marca.id_marca AND venda.id_modelo = modelo.id_modelo AND venda.id_extras = extras.id_extras AND venda.vendido = 1 AND vendidos.id_cliente = cliente.id_cliente AND venda.id_venda = vendidos.id_venda order by venda.id_venda desc limit ' + 6 * (page-1) + ',6;'
+        query = 'SELECT venda.*, marca, modelo, preço_final AS preco_final, categoria, cliente.*, vendidos.*, (select count(*) from venda where  vendido=1) as totalCarros FROM venda, marca, modelo, extras, categoria, vendidos, cliente WHERE venda.id_categoria = categoria.id_categoria AND venda.id_marca = marca.id_marca AND venda.id_modelo = modelo.id_modelo AND venda.id_extras = extras.id_extras AND venda.vendido = 1 AND vendidos.id_cliente = cliente.id_cliente AND venda.id_venda = vendidos.id_venda order by venda.id_venda desc limit ' + 6 * (page - 1) + ',6;'
         queryStandard(query, error, req, res);
     } else {
         // res.send("tagId is set to " + req.params.page);
@@ -456,12 +456,13 @@ exports.updateClient = function (req, res) {
 exports.deleteClient = function (req, res) {
     var error = "Não foi possível eliminar os clientes"
     var id_morada = req.body.id_morada;
-    var id_cliente = req.body.id_cliente;
+    var id_cliente = req.params.id
+
     //console.log(req.body,id_cliente,id_morada);
 
 
     var query1 = 'delete from morada where id_morada=' + id_morada + ';'
-    var query2 = 'delete from cliente where id_cliente=' + id_cliente + ';'
+    // var query2 = 'delete from cliente where id_cliente=' + id_cliente + ';'
 
     res.send("OLA")
     query2Tables(query1, query2, req, res)
@@ -473,11 +474,11 @@ exports.updateCar = function (req, res) {
 };
 exports.deleteCar = function (req, res) {
     var error = "Não foi possível eliminar o carro"
-    var id_venda = req.body.id_venda;
+    var id_venda = req.params.id
     var id_modelo = req.body.id_morada;
 
     var query1 = 'delete from venda where id_venda=' + id_venda + ';'
-    var query2 = 'delete from morada where id_morada=' + id_modelo + ';'
+    // var query2 = 'delete from morada where id_morada=' + id_modelo + ';'
 
     query2Tables(query1, query2, req, res)
 
@@ -515,17 +516,8 @@ function query2Tables(query1, query2, req, res) {
 
     connection.query(query1, function (err, rows, fields) {
         if (!err) {
-            console.log("Atualizei Morada");
-            connection.query(query2, function (err, rows, fields) {
-                if (!err) {
-                    res.status(200).send("Cliente Atualizado");
-                    console.log("entrei");
-                } else {
-                    res.status(500).send("Erro BD");
-                    console.log('Error while performing Query.', err);
-                }
-                connection.end();
-            });
+            console.log("Eliminado sucesso");
+            res.status(200).send("Sucesso");
 
         } else {
             res.status(500).send("Erro BD");

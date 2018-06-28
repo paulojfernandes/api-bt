@@ -23,6 +23,11 @@ router.get('/stock', function (req, res) {
     dados = Dados.getCarsStock(req, res)
 });
 
+router.delete('/stock/:id', function (req, res) {
+    dados = Dados.deleteCar(req, res);
+    //res.send("ola")
+});
+
 router.get('/stock/:page', function (req, res) {
     dados = Dados.getCarsStockpage(req, res)
     //res.send("tagId is set to " + req.params.page);
@@ -96,7 +101,7 @@ router.put('/client', function (req, res) {
     //res.send("ola")
 });
 
-router.delete('/client', function (req, res) {
+router.delete('/client/:id', function (req, res) {
     dados = Dados.deleteClient(req, res);
     //res.send("ola")
 });
