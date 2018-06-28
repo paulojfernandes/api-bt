@@ -465,7 +465,7 @@ exports.deleteClient = function (req, res) {
     // var query2 = 'delete from cliente where id_cliente=' + id_cliente + ';'
 
     res.send("OLA")
-    query2Tables(query1, query2, req, res)
+    query2Tables(query1, req, res)
 
 };
 exports.updateCar = function (req, res) {
@@ -476,11 +476,12 @@ exports.deleteCar = function (req, res) {
     var error = "Não foi possível eliminar o carro"
     var id_venda = req.params.id
     var id_modelo = req.body.id_morada;
+    console.log(id_venda)
 
     var query1 = 'delete from venda where id_venda=' + id_venda + ';'
     // var query2 = 'delete from morada where id_morada=' + id_modelo + ';'
 
-    query2Tables(query1, query2, req, res)
+    query2Tables(query1, req, res)
 
 
 
@@ -523,6 +524,7 @@ function query2Tables(query1, query2, req, res) {
             res.status(500).send("Erro BD");
             console.log('Error while performing Query.', err);
         }
+        connection.end();
     });
 
 }
